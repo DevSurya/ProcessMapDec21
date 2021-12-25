@@ -1,4 +1,37 @@
+Asgn -> write a add method as suspend -> add(10,30) return sum -> delay (random number)
+      invoke add method and show sum once  add returns 
+---------------
+Lab 9 - lab3
+package simple.demo2
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+fun main() {
+    println("Hello ")
+    var str = "processing...."
+    val j1 = GlobalScope.launch {
+        println("Just before Delay1")
+        delay(2000L)
+        str ="Fetch Data from Server"
+        println("after delay1")
+    }
+    GlobalScope.launch {
+        println("Rendering logic")
+        println("Current Value of data is " + str)
+        j1.join()
+        println("Value of data after join is " + str)
+
+        println("after delay2")
+    }
+    println("World !!!")
+
+    readLine()
+
+}
+
+-------------------
 Lab8 - Lab2
       package simple.demo2
 
