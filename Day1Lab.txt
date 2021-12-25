@@ -1,3 +1,41 @@
+
+
+
+
+
+
+
+
+Lab 7 - Demo2 project
+      Modify build.gradle (app ) to include
+              implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
+      Create Lab1
+            package simple.demo2
+
+            import kotlinx.coroutines.GlobalScope
+            import kotlinx.coroutines.delay
+            import kotlinx.coroutines.launch
+
+            fun main() {
+                println("Hello ")
+
+                GlobalScope.launch {
+                    println("Just before Delay1")
+                    delay(1000L)
+                    println("after delay1")
+                }
+                GlobalScope.launch {
+                    println("Just before Delay2")
+                    delay(1000L)
+                    println("after delay2")
+                }
+                readLine()
+                println("World !!!")
+            }
+
+      modify current code to print 1 to 1000 in both the launch methods and see execution
+
+-------------------------------------------------------
 Lab 6 - JSON Serialization
 1. Modify gradle file (Module)->   classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.10"
 2. Modify gradle file (app -> 
