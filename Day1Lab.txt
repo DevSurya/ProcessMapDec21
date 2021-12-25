@@ -1,0 +1,27 @@
+Lab1 - Android Studio -> New project (Nauget) -> Empty/no activity
+
+      fun main() {
+          var name:String?  = "aa"
+          var nm:String="aaa"
+          println(name)
+          println(name?.length)
+
+          println(nm?.length)
+
+          name = null
+
+          println(nm?.length)
+
+          println(name)
+          var len:Int = name?.length?:0
+          println(len)
+
+      }
+      
+      Class Data for Address where -> Line1, line2 , city and state -> line2 is optional
+        write print method to convert "line1, line2, city, state" as string
+      Make Other Data class for Person -> pname, address(optional)
+      Initialize to print the person details.
+      
+      
+      
