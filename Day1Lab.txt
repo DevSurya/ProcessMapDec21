@@ -1,3 +1,16 @@
+Lab 4 - Operator 
+      package simple.demo1
+
+      data class Emp(val empno: Int, val ename: String, var salary:Int)
+      operator fun Emp.inc() = Emp(empno, ename, salary+100)
+      fun main() {
+          var emp= Emp(10,"AA",1000)
+          println(emp)
+          emp++
+          println(emp)
+      }
+
+==========
 Lab 3 - 
       Write a new extention function for List to Print in reverse order. like list.reverse()
 package simple.demo1
