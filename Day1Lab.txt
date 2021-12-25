@@ -1,3 +1,30 @@
+Lab 10 - Lab 4 - delegation implementation
+package simple.demo2
+
+interface Base {
+    fun print()
+}
+class JSONFormat(val x: Int) : Base {
+    override fun print() { println("JSONFormat" + x.toString()) }
+}
+class XMLFormat(val x: Int) : Base {
+    override fun print() { println("XMLFormat" + x.toString())  }
+}
+class GSONFormat(val x: Int) : Base {
+    override fun print() { println("GSONFormat" + x.toString())  }
+}
+
+class  Derived(b: Base) : Base by b
+
+fun main() {
+   var impl1:Base = JSONFormat(10)
+   var impl2:Base = XMLFormat(10)
+   var impl3:Base = GSONFormat(10)
+   var derived:Derived = Derived(impl3)
+   derived.print()
+}
+
+---------
 Asgn -> write a add method as suspend -> add(10,30) return sum -> delay (random number)
       invoke add method and show sum once  add returns 
 ---------------
