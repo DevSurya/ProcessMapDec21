@@ -1,3 +1,22 @@
+Lab 2 - Delete all the departments with loc = "Hyd"
+
+package simple.demo1
+data class Dept(var deptno:Int, var dname:String,var loc:String)
+fun main() {
+      var list= mutableListOf<Dept>()
+      list.add(Dept(10,"HR","Hyd"))
+          list.add(Dept(20,"HR","Pnq"))
+          list.add(Dept(30,"it","Blr"))
+          list.add(Dept(40,"fIN","Hyd"))
+          println(list)
+          list.replaceAll({d->
+              d.loc ="NCR11"
+              return@replaceAll d
+          })
+          println(list)
+}
+
+
 Lab1 - Android Studio -> New project (Nauget) -> Empty/no activity
 
       fun main() {
