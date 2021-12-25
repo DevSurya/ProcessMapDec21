@@ -1,3 +1,22 @@
+Lab 12 - observable(Lab6)
+package simple.demo2
+
+import kotlin.properties.Delegates
+
+class User {
+    var name: String by Delegates.observable("no name>") {
+            prop, old, new ->
+        println("$old -> $new  for $prop")
+    }
+}
+
+fun main() {
+    val user = User()
+    user.name = "first"
+    user.name = "second"
+    user.name = "second"
+}
+
 Lab 11 - Lazy (Lab5)
 package simple.demo2
 
