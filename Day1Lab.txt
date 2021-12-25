@@ -23,5 +23,6 @@ Lab1 - Android Studio -> New project (Nauget) -> Empty/no activity
       Make Other Data class for Person -> pname, address(optional)
       Initialize to print the person details.
       
-      
+ //data class User(val name: String, val age: Int)
+ 
       
