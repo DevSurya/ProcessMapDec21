@@ -1,12 +1,35 @@
 
+Lab8 - Lab2
+      package simple.demo2
 
+      import kotlinx.coroutines.GlobalScope
+      import kotlinx.coroutines.delay
+      import kotlinx.coroutines.launch
+      import kotlinx.coroutines.runBlocking
 
+      fun main() {
+          println("in main ")
+          runBlocking {
+            launch {   hellohelp() }
+            launch { worldhelp() }
+              launch { delay(500L)
+                      println("in third direct launch")
+              }
+          }
+          println("after hello and world help")
+      }
+      suspend fun hellohelp(){
+          println("Hello help start ")
+          delay(1000L)
+          println("Hello help end ")
+      }
+      suspend fun worldhelp(){
+          println("World help start ")
+          delay(1000L)
+          println("World help end ")
+      }
 
-
-
-
-
-Lab 7 - Demo2 project
+Lab 7 - Demo2 project (Lab1)
       Modify build.gradle (app ) to include
               implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
       Create Lab1
