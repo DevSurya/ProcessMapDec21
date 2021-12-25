@@ -1,3 +1,18 @@
+Lab 11 - Lazy (Lab5)
+package simple.demo2
+
+val CheckLazyValue:String by lazy {
+    println("go to db and fetch value")
+    "hello "
+    }
+    fun main() {
+        println(CheckLazyValue)
+        println(CheckLazyValue)
+        println(CheckLazyValue)
+    }
+}
+
+====
 Lab 10 - Lab 4 - delegation implementation
 package simple.demo2
 
