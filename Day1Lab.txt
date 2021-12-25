@@ -1,3 +1,33 @@
+Lab 6 - JSON Serialization
+1. Modify gradle file (Module)->   classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.10"
+2. Modify gradle file (app -> 
+      apply plugin: "kotlinx-serialization"
+
+      implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
+
+
+package com.example.app3
+
+
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+@Serializable
+data class Name(val fname: String, val lname: String)
+
+fun main() {
+    val json = Json.encodeToString(Name("Vaishali", "Tapaswi"))
+    println(json)
+    val json1 = """{"fname":"Fands", "lname":"Infonet"}"""
+
+    val data = Json.decodeFromString<Name>(json1)
+    println(data)
+    }
+
+
+-------------------------
 Lab 4 - Operator 
       package simple.demo1
 
