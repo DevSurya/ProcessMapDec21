@@ -1,3 +1,80 @@
+Lab 6 - demo6 - new project
+    Modify gradle file
+    Add to plugin
+       id 'kotlin-kapt'
+       id 'kotlin-android-extensions'
+    
+    Modify dependencies to include
+    
+    def room_version = "2.2.6" // check latest version from docs
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
+
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    kapt "android.arch.lifecycle:compiler:1.1.0"
+
+write user.kt
+    import androidx.room.ColumnInfo
+    import androidx.room.Entity
+    import androidx.room.PrimaryKey
+
+    @Entity()
+    data class User(
+        @PrimaryKey
+        @ColumnInfo(name = "namecol") val name: String,
+        @ColumnInfo(name = "agecol") val age: Int?
+    )
+
+write UserDao.kt
+
+    import androidx.room.Dao
+    import androidx.room.Delete
+    import androidx.room.Insert
+    import androidx.room.Query
+
+    @Dao
+    interface UserDao {
+        @Query("SELECT * FROM user")
+        fun getAll(): List<User>
+
+
+        @Insert
+        fun insertAll(vararg users: User)
+
+        @Delete
+        fun delete(user: User)
+    }
+write AppDatabase
+
+    import androidx.room.Database
+    import androidx.room.RoomDatabase
+
+    @Database(entities = [User::class], version = 2)
+    abstract class AppDatabase : RoomDatabase() {
+        abstract fun userDao(): UserDao
+    }
+
+Modify mainactivity onCreate method to include 
+    val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
+
+        val user = User( "v2",22)
+
+        db.userDao().insertAll(user)
+        val users: List<User> = db.userDao().getAll()
+
+        users.forEach{
+            println(it)
+        }
+
+Test -> run logs -> check database values 
+
+------------
 Lab 5 - demo5 
     build.gradle (app)
         
