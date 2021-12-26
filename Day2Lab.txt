@@ -1,4 +1,4 @@
-Lab 1 - Reflection
+Lab 1 - Reflection (demo3 project)
   build.gradle(app) to include
         implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.0'
   Write Lab1.kt
