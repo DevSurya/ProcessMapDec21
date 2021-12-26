@@ -1,3 +1,30 @@
+Lab 2 - Create lib
+    new module -> java or kotlin library -> 
+      class MyClass {
+
+        fun sqr(no : Int):Int {
+            println("mylib-MyClass-SQR invoked ")
+            return no*no;
+        }
+
+        fun cube(no : Int):Int {
+            println("mylib-MyClass-SQR invoked ")
+            return no*no*no;
+        }
+    }
+    
+    Modify demo3 -> module dependencies -> add module or 
+         implementation project(path: ':mylib')
+    Write lab2.kt
+     import com.example.mylib.MyClass
+
+    fun main() {
+        val myclass = MyClass()
+        println("SQR of 10 is " + myclass.sqr(10))
+        println("Cube of 10 is " + myclass.cube(10))
+    }
+
+
 Lab 1 - Reflection (demo3 project)
   build.gradle(app) to include
           implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.0'
