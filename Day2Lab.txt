@@ -1,4 +1,46 @@
-Lab 3 - https://ktor.io/docs/creating-http-apis.html#project-setup
+Lab 4 - client.kt in demo4
+package com.example.demo4
+
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+fun main() {
+
+    val client = HttpClient()
+    val url = "http://localhost:3000/dept"
+
+    runBlocking {
+        val httpResponse: HttpResponse = client.get(url)
+        val stringBody: String = httpResponse.receive()
+        println("Return of dept " + stringBody)
+    }
+    runBlocking {
+        val d = Dept(333,"IT","BLR")
+        val json = Json.encodeToString(d)
+
+        val message = client.post<HttpResponse> (url){
+            contentType(ContentType.Application.Json)
+            body = json
+        }
+        println("post returns " + message.status)
+    }
+    runBlocking {
+        val httpResponse: HttpResponse = client.get(url + "/10")
+        val stringBody: String = httpResponse.receive()
+        println("return of dept/10 " + stringBody)
+    }
+
+    client.close()
+}
+
+
+Lab 3 - https://ktor.io/docs/creating-http-apis.html#project-setup (new project - demo4)
 modify build.gradle.app 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
