@@ -1,0 +1,25 @@
+Lab 1 - Reflection
+  build.gradle(app) to include
+        implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.0'
+  Write Lab1.kt
+      package com.example.demo3
+
+      class Maths {
+          fun sqr(no : Int):Int {
+              return no*no;
+          }
+      }
+
+      fun main() {
+          val c = Maths::class
+          val maths = Maths()
+          println("List of Constructors ...")
+          c.constructors.forEach{ println(it)}
+          println("List of Members ...")
+          c.members.forEach{ println(it)}
+          println("SQR Function")
+          val fnsqr =  c.members.filter { it.name=="sqr" }.first()
+          println(fnsqr)
+          println(fnsqr.call(maths, 100))
+      }
+Replace line number 15 to dynamically create object
