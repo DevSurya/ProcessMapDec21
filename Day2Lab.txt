@@ -1,3 +1,108 @@
+Lab 5 - demo5 
+    build.gradle (app)
+        
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+
+    modify activity_main.xml to include
+         <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click "
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="465dp"
+        tools:ignore="OnClick" />
+
+    Write dataclasses.kt
+        data class Todo(var userId: Int, var id:Int, var title: String, var completed:Boolean)
+    Write APIInterface.kt
+                    package com.example.demo5
+
+                import retrofit2.Call
+                import retrofit2.Retrofit
+                import retrofit2.converter.gson.GsonConverterFactory
+                import retrofit2.http.GET
+                import com.google.gson.GsonBuilder
+
+
+                interface ApiInterface {
+
+                        @GET("/todos/1/")
+                        fun getTodo() : Call<Todo>
+
+                        companion object {
+
+                            var BASE_URL = "https://jsonplaceholder.typicode.com/"
+
+                            fun create() : ApiInterface {
+                                val gson = GsonBuilder()
+                                    .setLenient()
+                                    .create()
+
+                                val retrofit = Retrofit.Builder()
+                                    .baseUrl(BASE_URL)
+                                    .addConverterFactory(GsonConverterFactory.create(gson))
+                                    .build()
+                                return retrofit.create(ApiInterface::class.java)
+
+                            }
+                        }
+                    }
+    Write MainActivity.kt
+    package com.example.demo5
+
+import android.app.Application
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class MainActivity : AppCompatActivity() {
+    var btn: Button? = null
+    var view1: TextView? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        btn = findViewById<Button>(R.id.button)
+        view1 = findViewById<TextView>(R.id.txtview)
+        val apiInterface = ApiInterface.create().getTodo()
+        btn?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                println("in onclick listener....")
+                apiInterface.enqueue(object : Callback<Todo> {
+                    override fun onResponse(call: Call<Todo>?, response: Response<Todo>?) {
+                        println("in onResponse listener")
+
+                        var str: String = response?.body()?.toString() ?: "notfound"
+                        view1?.setText(str)
+                        Toast.makeText(this@MainActivity, str, Toast.LENGTH_SHORT).show()
+                        //recyclerAdapter.setMovieListItems(response.body()!!)
+                    }
+
+                    override fun onFailure(call: Call<Todo>?, t: Throwable?) {
+                        println("on failuer" + call?.request())
+                        println("on Failure" + t?.message)
+                        view1?.text = "Failure ...."
+                    }
+                })
+            }
+        })
+    }
+}
+
+Run -> 
+    check errors
+Modify manifest\androidManifest file to include 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+-----------
 Lab 4 - client.kt in demo4
 package com.example.demo4
 
