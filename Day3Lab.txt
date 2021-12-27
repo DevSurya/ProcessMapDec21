@@ -1,3 +1,10 @@
+Lab 3 - MVI
+
+https://medium.com/mindorks/the-evolution-of-android-architectures-mvp-mvvm-mvi-f72f67093b81
+https://medium.com/@binsdreams/comparison-on-mvp-mvvm-mvi-45886a753d63
+Lab2 - UI states
+
+-------------------------
 Lab1 - Model-View-ViewModel demo (https://resocoder.com/2018/09/07/mvvm-on-android-crash-course-kotlin-android-architecture-components/)
   Dependencies 
     implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
