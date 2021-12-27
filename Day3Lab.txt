@@ -1,3 +1,60 @@
+Lab 4 - Koin In
+  -> module -> KoinModule 
+    
+          val appModule = module {
+              single { provideOkHttpClient() }
+              single { provideRetrofit(get(), BuildConfig.BASE_URL) }
+              single { provideApiService(get()) }
+              single { provideNetworkHelper(androidContext()) }
+
+              single<ApiHelper> {
+                  return@single ApiHelperImpl(get())
+              }
+          }
+
+          private fun provideNetworkHelper(context: Context) = NetworkHelper(context)
+
+          private fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
+              val loggingInterceptor = HttpLoggingInterceptor()
+              loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+              OkHttpClient.Builder()
+                  .addInterceptor(loggingInterceptor)
+                  .build()
+          } else OkHttpClient
+              .Builder()
+              .build()
+
+          private fun provideRetrofit(
+              okHttpClient: OkHttpClient,
+              BASE_URL: String
+          ): Retrofit =
+              Retrofit.Builder()
+                  .addConverterFactory(MoshiConverterFactory.create())
+                  .baseUrl(BASE_URL)
+                  .client(okHttpClient)
+                  .build()
+
+          private fun provideApiService(retrofit: Retrofit): ApiService =
+              retrofit.create(ApiService::class.java)
+
+factory - 
+
+class MainViewModel(
+    private val mainRepository: MainRepository,
+    private val networkHelper: NetworkHelper
+) : ViewModel() {
+
+    private val _users = MutableLiveData<Resource<List<User>>>()
+    val users: LiveData<Resource<List<User>>>
+        get() = _users
+
+    init {
+        fetchUsers()
+    }
+
+
+
+------------------------
 Lab 3 - MVI
 
 https://medium.com/mindorks/the-evolution-of-android-architectures-mvp-mvvm-mvi-f72f67093b81
