@@ -1,0 +1,113 @@
+Lab1 - Model-View-ViewModel demo
+  Prep. 1. Data
+           data class Quote(val quoteText: String,
+                           val author: String) {
+              override fun toString(): String {
+                  return "$quoteText - $author"
+              }
+          }
+        2. Data Storage
+            DAO
+                    class FakeQuoteDao {
+                        private val quoteList = mutableListOf<Quote>()
+                        private val quotes = MutableLiveData<List<Quote>>()
+
+                        init {
+                            quotes.value = quoteList
+                        }
+
+                        fun addQuote(quote: Quote) {
+                            quoteList.add(quote)
+                            quotes.value = quoteList
+                        }
+
+                        fun getQuotes() = quotes as LiveData<List<Quote>>
+                    }
+            Db Configuration
+                class FakeDatabase private constructor() {
+
+                  var quoteDao = FakeQuoteDao()
+                      private set
+
+                  companion object {
+                      @Volatile private var instance: FakeDatabase? = null
+
+                      fun getInstance() =
+                              instance ?: synchronized(this) {
+                                  instance ?: FakeDatabase().also { instance = it }
+                              }
+                  }
+              }
+    3. Repository
+      
+        class QuoteRepository private constructor(private val quoteDao: FakeQuoteDao){
+
+            fun addQuote(quote: Quote) {
+                quoteDao.addQuote(quote)
+            }
+
+            fun getQuotes() = quoteDao.getQuotes()
+
+            companion object {
+                @Volatile private var instance: QuoteRepository? = null
+
+                fun getInstance(quoteDao: FakeQuoteDao) =
+                        instance ?: synchronized(this) {
+                            instance ?: QuoteRepository(quoteDao).also { instance = it }
+                        }
+            }
+        }
+        
+     4. View Model
+        ViewModel
+          class QuotesViewModel(private val quoteRepository: QuoteRepository)
+          : ViewModel() {
+
+          fun getQuotes() = quoteRepository.getQuotes()
+
+          fun addQuote(quote: Quote) = quoteRepository.addQuote(quote)
+        }        
+        
+        ViewModelFactory
+
+          class QuotesViewModelFactory(private val quoteRepository: QuoteRepository)
+              : ViewModelProvider.NewInstanceFactory() {
+
+              @Suppress("UNCHECKED_CAST")
+              override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                  return QuotesViewModel(quoteRepository) as T
+              }
+          }
+        
+     5. Activity  (create two text boxes editText_quote, editText_author , one view(textView_quotes)  and one button(button_add_quote)
+      
+            class QuotesActivity : AppCompatActivity() {
+
+                override fun onCreate(savedInstanceState: Bundle?) {
+                    super.onCreate(savedInstanceState)
+                    setContentView(R.layout.activity_quotes)
+                    initializeUi()
+                }
+
+                private fun initializeUi() {
+                    val factory = InjectorUtils.provideQuotesViewModelFactory()
+                    val viewModel = ViewModelProviders.of(this, factory)
+                            .get(QuotesViewModel::class.java)
+
+                    viewModel.getQuotes().observe(this, Observer { quotes ->
+                        val stringBuilder = StringBuilder()
+                        println("in getQuotes observe method")
+                        quotes.forEach{ quote ->
+                            stringBuilder.append("$quote\n\n")
+                        }
+                        textView_quotes.text = stringBuilder.toString()
+                    })
+
+                    button_add_quote.setOnClickListener {
+                        val quote = Quote(editText_quote.text.toString(), editText_author.text.toString())
+                        viewModel.addQuote(quote)
+                        editText_quote.setText("")
+                        editText_author.setText("")
+                    }
+                }
+            }
